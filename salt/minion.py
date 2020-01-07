@@ -1984,6 +1984,7 @@ class Minion(MinionBase):
         '''
         jid = ret.get('jid', ret.get('__jid__'))
         fun = ret.get('fun', ret.get('__fun__'))
+        args = ret.get('fun_args', ret.get('__fun_args__'))
         if self.opts['multiprocessing']:
             fn_ = os.path.join(self.proc_dir, jid)
             if os.path.isfile(fn_):
@@ -1999,7 +2000,7 @@ class Minion(MinionBase):
                     'id': self.opts['uid'],
                     'jid': jid,
                     'fun': fun,
-                    'arg': ret.get('arg'),
+                    'arg': args,
                     'tgt': ret.get('tgt'),
                     'tgt_type': ret.get('tgt_type'),
                     'load': ret.get('__load__')}
@@ -3379,6 +3380,7 @@ class SyndicManager(MinionBase):
             jdict = self.job_rets.setdefault(master, {}).setdefault(mtag, {})
             if not jdict:
                 jdict['__fun__'] = data.get('fun')
+                jdict['__fun_args__'] = data.get('fun_args')
                 jdict['__jid__'] = data['jid']
                 jdict['__load__'] = {}
                 fstr = '{0}.get_load'.format(self.opts['master_job_cache'])
